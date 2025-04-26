@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+
+class BookingListScreen extends StatefulWidget {
+  const BookingListScreen({super.key});
+
+  @override
+  State<BookingListScreen> createState() => _BookingListScreenState();
+}
+
+class _BookingListScreenState extends State<BookingListScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('View of Bookings')),
+      body: Placeholder(),
+    );
+  }
+}
