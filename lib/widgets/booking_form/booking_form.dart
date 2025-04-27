@@ -44,6 +44,7 @@ class _BookingFormState extends State<BookingForm> {
         dateOfEnd: dateOfEnd,
       );
       listProvider.addBooking(booking);
+      goToHome();
     }
   }
 
@@ -116,9 +117,9 @@ class _BookingFormState extends State<BookingForm> {
     }
   }
 
-  // void goToHome() {
-  //   Navigator.pop(context);
-  // }
+  void goToHome() {
+    Navigator.pop(context);
+  }
 
   @override
   void dispose() {
@@ -129,12 +130,15 @@ class _BookingFormState extends State<BookingForm> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<BookingListProvider>();
+    final theme = Theme.of(context);
+
     return Form(
       key: controller.formKey,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text('Book our room for you!', style: theme.textTheme.titleLarge),
             CustomTextFormField(
               controller: controller.nameOfBookerController,
               labelText: 'Name of booker : ',
@@ -167,12 +171,8 @@ class _BookingFormState extends State<BookingForm> {
                       readOnly: true,
                       onTap: onDateOfStartTap,
                       validator: (value) {
-                        for (var booking in provider.bookings) {
-                          if (booking.dateOfStart.isAfter(
-                            selectedDateOfStart,
-                          )) {
-                            return 'Date of start is not valid';
-                          }
+                        if (value == null || value.isEmpty) {
+                          return 'Please pick a date!';
                         }
                         return null;
                       },
@@ -186,8 +186,45 @@ class _BookingFormState extends State<BookingForm> {
                       onTap: onTimeStartTap,
                       readOnly: true,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                        for (var booking in provider.bookings) {
+                          if (((selectedTimeOfStart!.hour >
+                                          booking.dateOfStart.hour ||
+                                      (selectedTimeOfStart!.hour ==
+                                              booking.dateOfStart.hour &&
+                                          selectedTimeOfStart!.minute >=
+                                              booking.dateOfStart.minute)) &&
+                                  (selectedTimeOfStart!.hour <
+                                          booking.dateOfEnd.hour ||
+                                      (selectedTimeOfStart!.hour ==
+                                              booking.dateOfEnd.hour &&
+                                          selectedTimeOfStart!.minute <
+                                              booking.dateOfEnd.minute))) ||
+                              ((selectedTimeOfEnd!.hour >
+                                          booking.dateOfStart.hour ||
+                                      (selectedTimeOfEnd!.hour ==
+                                              booking.dateOfStart.hour &&
+                                          selectedTimeOfEnd!.minute >=
+                                              booking.dateOfStart.minute)) &&
+                                  (selectedTimeOfEnd!.hour <
+                                          booking.dateOfEnd.hour ||
+                                      (selectedTimeOfEnd!.hour ==
+                                              booking.dateOfEnd.hour &&
+                                          selectedTimeOfEnd!.minute <
+                                              booking.dateOfEnd.minute))) ||
+                              (selectedTimeOfStart!.hour <
+                                      booking.dateOfStart.hour &&
+                                  selectedTimeOfEnd!.hour >
+                                      booking.dateOfEnd.hour) ||
+                              (selectedTimeOfStart!.hour ==
+                                      booking.dateOfStart.hour &&
+                                  selectedTimeOfStart!.minute <=
+                                      booking.dateOfStart.minute &&
+                                  selectedTimeOfEnd!.hour ==
+                                      booking.dateOfEnd.hour &&
+                                  selectedTimeOfEnd!.minute >=
+                                      booking.dateOfEnd.minute)) {
+                            return 'This time is already booked';
+                          }
                         }
                         return null;
                       },
@@ -209,7 +246,7 @@ class _BookingFormState extends State<BookingForm> {
                       onTap: onDateOfEndTap,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                          return 'Please pick a date';
                         }
                         return null;
                       },
@@ -224,7 +261,7 @@ class _BookingFormState extends State<BookingForm> {
                       readOnly: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                          return 'Please pick a time';
                         }
                         return null;
                       },

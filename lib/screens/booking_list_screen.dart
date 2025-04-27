@@ -32,17 +32,22 @@ class _BookingListScreenState extends State<BookingListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('View of Bookings'),
-        actions: [IconButton(onPressed: goToCreation, icon: Icon(Icons.add))],
+        actions: [
+          IconButton(onPressed: goToCreation, icon: Icon(Icons.add, size: 30)),
+        ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: bookings.length,
-              itemBuilder:
-                  (ctx, index) => BookingInfoCard(booking: bookings[index]),
-            ),
-          ),
+          bookings.isEmpty
+              ? Center(child: Text('No bookings yet'))
+              : Expanded(
+                child: ListView.builder(
+                  itemCount: bookings.length,
+                  itemBuilder:
+                      (ctx, index) => BookingInfoCard(booking: bookings[index]),
+                ),
+              ),
         ],
       ),
     );
