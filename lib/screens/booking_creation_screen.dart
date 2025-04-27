@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hw50/widgets/booking_form/booking_form.dart';
 
 class BookingCreationScreen extends StatefulWidget {
   const BookingCreationScreen({super.key});
@@ -9,7 +10,11 @@ class BookingCreationScreen extends StatefulWidget {
 
 class _BookingCreationScreenState extends State<BookingCreationScreen> {
   @override
+  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text('Create some booking!')),
+      body: Center(child: BookingForm()),
+    );
   }
 }
