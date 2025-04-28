@@ -4,6 +4,7 @@ import 'package:hw50/provider/booking_list_provider.dart';
 import 'package:hw50/screens/booking_creation_screen.dart';
 import 'package:hw50/screens/booking_list_screen.dart';
 import 'package:hw50/screens/not_found_screen.dart';
+import 'package:hw50/theme/light_theme.dart';
 import 'package:provider/provider.dart';
 
 class Hw50 extends StatelessWidget {
@@ -14,6 +15,7 @@ class Hw50 extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (ctx) => BookingListProvider(),
       child: MaterialApp(
+        theme: lightTheme,
         initialRoute: AppRoutes.home,
         routes: {
           AppRoutes.home: (ctx) => BookingListScreen(),

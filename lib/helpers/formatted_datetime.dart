@@ -11,8 +11,8 @@ String formattedDate(DateTime? dateTime) {
   if (dateTime == null) return '';
   final day = _addZero(dateTime.day);
   final month = _addZero(dateTime.month);
-  final year = dateTime.year;
-  return '$day.$month.$year';
+
+  return '$day.$month';
 }
 
 String formattedTime(TimeOfDay? time) {
@@ -26,5 +26,5 @@ String formattedDateTime(DateTime? dateTime) {
   if (dateTime == null) return '';
   final date = formattedDate(dateTime);
   final time = formattedTime(TimeOfDay.fromDateTime(dateTime));
-  return '$date $time';
+  return '$time $date ';
 }
