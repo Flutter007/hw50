@@ -20,6 +20,7 @@ class _BookingFormState extends State<BookingForm> {
   TimeOfDay? selectedTimeOfStart;
   TimeOfDay? selectedTimeOfEnd;
   final controller = BookingFormController();
+  final now = DateTime.now();
 
   @override
   void initState() {
@@ -45,14 +46,14 @@ class _BookingFormState extends State<BookingForm> {
         dateOfEnd: dateOfEnd,
       );
       listProvider.addBooking(booking);
-      goToHome();
+      goToHomeScreen();
     }
   }
 
   void onDateOfStartTap() async {
-    final now = DateTime.now();
-    final firstDate = DateTime(now.year, now.month, now.day);
-    final lastDate = DateTime(now.year, now.month, now.day);
+    final dateNow = DateTime(now.year, now.month, now.day);
+    final firstDate = dateNow;
+    final lastDate = dateNow;
     final userDateOfStart = await showDatePicker(
       context: context,
       firstDate: firstDate,
@@ -88,9 +89,9 @@ class _BookingFormState extends State<BookingForm> {
   }
 
   void onDateOfEndTap() async {
-    final now = DateTime.now();
-    final firstDate = DateTime(now.year, now.month, now.day);
-    final lastDate = DateTime(now.year, now.month, now.day + 1);
+    final dateNow = DateTime(now.year, now.month, now.day);
+    final firstDate = dateNow;
+    final lastDate = dateNow;
     final userDateOfEnd = await showDatePicker(
       context: context,
       firstDate: firstDate,
@@ -118,8 +119,12 @@ class _BookingFormState extends State<BookingForm> {
     }
   }
 
-  void goToHome() async {
-    await Navigator.of(context).pushNamed(AppRoutes.home);
+  Future<void> goToHomeScreen() async {
+    await Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.home,
+      (route) => false,
+    );
   }
 
   @override
@@ -161,7 +166,9 @@ class _BookingFormState extends State<BookingForm> {
                   controller: controller.titleController,
                   labelText: 'Title : ',
                   validator: (value) {
-                    if (value == null || value.trim().length < 3) {
+                    if (value == null ||
+                        value.trim().length < 3 ||
+                        value.isEmpty) {
                       return 'Title is too short';
                     }
                     return null;
